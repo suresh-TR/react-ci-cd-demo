@@ -32,6 +32,12 @@ jobs:
         run: npm ci
       - name: Build the node project
         run: npm run build
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy dist folder
+        run: echo "deploying dist folder"
     
 
         # run: |
