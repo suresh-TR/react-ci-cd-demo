@@ -1,23 +1,24 @@
 name: Setup node and install the dependencies
 description: Setup node and install the dependencies
-  runs: 
-    using: composite
-    steps:
-      - name: Install NodeJs
-        uses: actions/setup-node@v4
-        with: 
-          node-version: 22
-      - name: print node version
-        run: node --version
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        id: cacheDependencies
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Install dependencies
-        if: steps.cacheDependencies.outputs.cache-hit != 'true'
-        run: npm ci
-        shell: bash
+runs:
+  using: composite
+  steps:
+    - name: Install NodeJs
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+    - name: print node version
+      run: node --version
+      shell: bash
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      id: cacheDependencies
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Install dependencies
+      if: steps.cacheDependencies.outputs.cache-hit != 'true'
+      run: npm ci
+      shell: bash

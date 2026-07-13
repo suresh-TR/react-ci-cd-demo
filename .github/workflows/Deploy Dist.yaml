@@ -32,7 +32,7 @@ jobs:
       #   if: steps.cacheDependencies.outputs.cache-hit != 'true'
       #   run: npm ci
       - name: Set up Node and install the dependencies
-        uses: ./.github/actions/setupnode/action.yml
+        uses: ./.github/actions/setupnode
       - name: Run Lint
         run: npm run lint
   build:
@@ -59,7 +59,7 @@ jobs:
       #   if: steps.cacheDependencies.outputs.cache-hit != 'true'
       #   run: npm ci
       - name: Set up Node and install the dependencies
-        uses: ./.github/actions/setupnode/action.yml
+        uses: ./.github/actions/setupnode
       - name: Build the node project
         run: npm run build
       - name: Upload dist artifact
