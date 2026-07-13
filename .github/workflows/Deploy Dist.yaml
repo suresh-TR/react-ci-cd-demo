@@ -14,23 +14,25 @@ jobs:
     steps:
       - name: Clone code
         uses: actions/checkout@v4
-      - name: Install NodeJs
-        uses: actions/setup-node@v4
-        with: 
-          node-version: 22
-      - name: print node version
-        run: node --version
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        id: cacheDependencies
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Install dependencies
-        if: steps.cacheDependencies.outputs.cache-hit != 'true'
-        run: npm ci
+      # - name: Install NodeJs
+      #   uses: actions/setup-node@v4
+      #   with: 
+      #     node-version: 22
+      # - name: print node version
+      #   run: node --version
+      # - name: Cache dependencies
+      #   uses: actions/cache@v4
+      #   id: cacheDependencies
+      #   with:
+      #     path: node_modules
+      #     key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-node-
+      # - name: Install dependencies
+      #   if: steps.cacheDependencies.outputs.cache-hit != 'true'
+      #   run: npm ci
+      - name: Set up Node and install the dependencies
+        uses: ./.github/actions/action.yml
       - name: Run Lint
         run: npm run lint
   build:
@@ -39,23 +41,25 @@ jobs:
     steps:
       - name: Clone code
         uses: actions/checkout@v4
-      - name: Install NodeJs
-        uses: actions/setup-node@v4
-        with: 
-          node-version: 22
-      - name: print node version
-        run: node --version
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        id: cacheDependencies
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Install dependencies
-        if: steps.cacheDependencies.outputs.cache-hit != 'true'
-        run: npm ci
+      # - name: Install NodeJs
+      #   uses: actions/setup-node@v4
+      #   with: 
+      #     node-version: 22
+      # - name: print node version
+      #   run: node --version
+      # - name: Cache dependencies
+      #   uses: actions/cache@v4
+      #   id: cacheDependencies
+      #   with:
+      #     path: node_modules
+      #     key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-node-
+      # - name: Install dependencies
+      #   if: steps.cacheDependencies.outputs.cache-hit != 'true'
+      #   run: npm ci
+      - name: Set up Node and install the dependencies
+        uses: ./.github/actions/action.yml
       - name: Build the node project
         run: npm run build
       - name: Upload dist artifact
