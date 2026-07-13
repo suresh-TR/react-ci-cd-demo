@@ -12,7 +12,16 @@ jobs:
           node-version: 22
       - name: print node version
         run: node --version
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        id: cacheDependencies
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install dependencies
+        if: steps.cacheDependencies.outputs.cache-hit != 'true'
         run: npm ci
       - name: Run Lint
         run: npm run lint
@@ -28,7 +37,16 @@ jobs:
           node-version: 22
       - name: print node version
         run: node --version
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        id: cacheDependencies
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install dependencies
+        if: steps.cacheDependencies.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build the node project
         run: npm run build
