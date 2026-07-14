@@ -1,0 +1,62 @@
+name: Deploy React to Github Pages
+on: 
+  # push:
+  #   branches:
+  #     - main
+  #     - feature/**
+  #   paths-ignore:
+  #     - README.md
+  #     - .github/workflows/*
+  workflow_dispatch:
+jobs:
+  test: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone code
+        uses: actions/checkout@v4
+      - name: Set up Node and install the dependencies
+        uses: ./.github/actions/setupnode
+      - name: Run Lint
+        run: npm run lint
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Clone code
+        uses: actions/checkout@v4
+      - name: Set up Node and install the dependencies
+        uses: ./.github/actions/setupnode
+      - name: Build the node project
+        run: npm run build
+      - name: Upload dist artifact
+        uses: actions/upload-pages-artifact@v3
+        with: 
+          name: github-pages
+          path: dist
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permission: 
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.output.page_url}}
+    steps: 
+      - name: Deploy to github pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+      with: 
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+        
+    
+
+        # run: |
+        #   echo "Cloning code"
+        #   echo "${{toJSON(github)}}"
+        #   git clone https://github.com/${{github.repository}}.git myfiles
+        #   cd myfiles && ls
