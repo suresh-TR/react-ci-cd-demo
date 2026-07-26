@@ -1,6 +1,6 @@
 name: Deploy Dist
 on: 
-  push:
+  # push:
     # branches:
     #   - main
     #   - feature/**
