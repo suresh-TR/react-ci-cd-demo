@@ -1,12 +1,12 @@
 name: Deploy Dist
 on: 
   push:
-    branches:
-      - main
-      - feature/**
-    paths-ignore:
-      - README.md
-      - .github/workflows/*
+    # branches:
+    #   - main
+    #   - feature/**
+    # paths-ignore:
+    #   - README.md
+    #   - .github/workflows/*
   workflow_dispatch:
 jobs:
   test: 
