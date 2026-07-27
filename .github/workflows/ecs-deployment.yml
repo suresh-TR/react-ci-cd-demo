@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 env: 
   NODE_IMAGE_NAME: ecs-demo-react
+  AWS_REGION: us-east-1
 jobs:
   build-image-react:
     runs-on: ubuntu-latest
@@ -36,3 +37,15 @@ jobs:
           file: ./Dockerfile.prod
           push: true
           tags: ${{ steps.meta.outputs.tags }}   
+  deploy-to-ecs:
+    runs-on: ubuntu-latest
+    needs: 
+      build-image-react
+    steps: 
+      uses: aws-actions/configure-aws-credentials@v6.2.3
+      with:
+      - name: Configure aws credentials
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+    
