@@ -7,6 +7,10 @@ on:
 env: 
   NODE_IMAGE_NAME: ecs-demo-react
   AWS_REGION: us-east-1
+  ECS_CLUSTER - ECSdemocluster2
+  ECS_SERVICE - ECSdemoservice
+  ECS_TASK_DEFINITION: ECSdemotd
+  REACT_CONTAINER_NAME: reactappcontainer
 jobs:
   build-image-react:
     runs-on: ubuntu-latest
@@ -48,4 +52,17 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-    
+      - name: Add image details of react app
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition-family: ${{ env.ECS_TASK_DEFINITION }}
+          task-definition-revision: task-definition-revision
+          container-name: ${{ env.reactappcontainer }}
+          image: ${{ vars.DOCKER_USERNAME}}/${{ env.NODE_IMAGE_NAME }}
+      - name: Deploy to Amazon ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
